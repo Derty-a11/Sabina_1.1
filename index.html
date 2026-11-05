@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05030f">
+<title>Сабина — моя звезда</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05030f;color:#fff;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  body{
+    background:
+      radial-gradient(ellipse at 18% 22%,#5b238c66 0%,transparent 28%),
+      radial-gradient(ellipse at 82% 78%,#174d9a66 0%,transparent 30%),
+      radial-gradient(ellipse at 53% 48%,#35105c 0%,#100b2b 45%,#03020d 100%);
+  }
+
+  /* ================= КОСМОС ================= */
+  #space{position:fixed;inset:0;overflow:hidden;z-index:0}
+  .nebula{
+    position:absolute;inset:-25%;
+    background:
+      radial-gradient(ellipse at 20% 25%,#a24dff55 0%,#4a208a33 14%,transparent 32%),
+      radial-gradient(ellipse at 78% 70%,#267de755 0%,#16507a44 16%,transparent 36%),
+      radial-gradient(ellipse at 55% 12%,#ff4fa833 0%,transparent 26%),
+      conic-gradient(from 35deg at 50% 50%,transparent 0 12%,#9b4cff1a 16%,transparent 23% 48%,#ff68c31a 55%,transparent 64%);
+    filter:blur(34px);
+    animation:drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift{to{transform:translate(3%,-2%) scale(1.1)}}
+  .starfield{position:absolute;inset:0}
+  .dot{
+    position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;
+    box-shadow:0 0 7px 2px #c8caff;
+    animation:twinkle var(--t) ease-in-out infinite alternate;
+  }
+  @keyframes twinkle{to{opacity:.18;transform:scale(.55)}}
+
+  /* ================= НАДПИСИ ВОКРУГ ================= */
+  .labels{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .love{
+    position:absolute;left:0;top:0;white-space:nowrap;
+    font-size:clamp(9px,1.6vw,13px);font-weight:500;
+    color:#e2ecff;
+    text-shadow:0 0 10px rgba(150,200,255,.9),0 0 24px rgba(90,150,255,.45);
+    will-change:transform;
+  }
+
+  /* ================= ЦЕНТР ================= */
+  .center{
+    position:fixed;inset:0;z-index:2;
+    display:grid;place-items:center;text-align:center;padding:24px;
+    pointer-events:none;
+  }
+  .content{
+    position:relative;z-index:2;
+    display:flex;flex-direction:column;align-items:center;gap:16px;
+    pointer-events:auto;max-width:340px;
+  }
+  .kicker{
+    letter-spacing:.28em;text-transform:uppercase;font-size:11px;
+    color:#c7b8ff;opacity:.85;transition:opacity .5s;
+  }
+  h1{
+    font-weight:500;font-size:clamp(30px,7.5vw,60px);letter-spacing:.04em;
+    margin:0;text-shadow:0 0 30px #b68cff99;transition:opacity .5s;
+  }
+  .sub{
+    margin:0;font-size:14px;color:#d6d0ef;line-height:1.6;max-width:300px;
+    transition:opacity .5s;
+  }
+  .hint{font-size:11.5px;color:#a9a0c9;transition:opacity .5s}
+  .signature{
+    font-size:10.5px;color:#bdb3df;letter-spacing:.12em;
+    transition:opacity .5s;
+  }
+
+  /* ================= ЗВЕЗДА ================= */
+  .star-wrap{
+    position:relative;width:150px;height:150px;display:grid;place-items:center;
+    cursor:pointer;z-index:2;
+    transition:transform 1.6s cubic-bezier(.18,.75,.2,1);
+    will-change:transform;
+  }
+  .halo{
+    position:absolute;width:250px;height:250px;border-radius:50%;
+    background:radial-gradient(circle,
+      rgba(200,235,255,.55) 0%,
+      rgba(140,200,255,.26) 32%,
+      rgba(110,170,255,0) 68%);
+    filter:blur(7px);pointer-events:none;
+    animation:breathe 4.6s ease-in-out infinite;
+  }
+  @keyframes breathe{50%{transform:scale(1.18);opacity:.72}}
+
+  .star{
+    position:relative;width:124px;height:124px;
+    clip-path:polygon(50% 0%,61% 33%,96% 34%,69% 56%,79% 92%,50% 71%,21% 92%,31% 56%,4% 34%,39% 33%);
+    background:linear-gradient(140deg,
+      #ffffff 0%, #eef8ff 16%, #c9e6ff 32%, #9ccfff 48%,
+      #ffffff 62%, #dff1ff 76%, #a9d6ff 90%, #ffffff 100%);
+    filter:drop-shadow(0 0 12px rgba(175,222,255,.9))
+           drop-shadow(0 0 36px rgba(110,175,255,.6));
+    animation:pulse 4.6s ease-in-out infinite;
+    will-change:transform;
+  }
+  .star::after{
+    content:"";position:absolute;inset:-55%;
+    background:conic-gradient(from 0deg,
+      rgba(255,255,255,0)    0deg,
+      rgba(255,255,255,.95)  42deg,
+      rgba(255,255,255,0)    92deg,
+      rgba(180,225,255,.55) 168deg,
+      rgba(255,255,255,0)   220deg,
+      rgba(255,255,255,.85) 300deg,
+      rgba(255,255,255,0)   360deg);
+    mix-blend-mode:screen;
+    opacity:.75;
+    animation:spin 7.5s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
+
+  /* ================= КНОПКИ ================= */
+  .glass{
+    border-radius:999px;padding:13px 26px;
+    border:1px solid rgba(190,225,255,.35);
+    background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
+    backdrop-filter:blur(12px) saturate(150%);
+    -webkit-backdrop-filter:blur(12px) saturate(150%);
+    color:#eaf5ff;font-family:inherit;font-size:14px;letter-spacing:.04em;
+    box-shadow:0 8px 26px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.28);
+    cursor:pointer;transition:transform .18s,opacity .5s;
+  }
+  .glass:active{transform:scale(.96)}
+
+  #approach{transition:opacity .5s,transform .18s}
+
+  .back{
+    position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));
+    transform:translate(-50%,150%);
+    z-index:40;padding:13px 24px;border-radius:999px;
+    border:1px solid rgba(190,225,255,.38);
+    background:linear-gradient(160deg,rgba(255,255,255,.20),rgba(255,255,255,.06));
+    backdrop-filter:blur(16px) saturate(170%);
+    -webkit-backdrop-filter:blur(16px) saturate(170%);
+    color:#eaf5ff;font-family:inherit;font-size:13px;font-weight:600;
+    letter-spacing:.04em;white-space:nowrap;
+    box-shadow:0 10px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.32);
+    opacity:0;pointer-events:none;cursor:pointer;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .4s;
+  }
+  .final .back{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+  .final .back:active{transform:translate(-50%,0) scale(.96)}
+
+  /* ================= СЕРДЕЧКИ ================= */
+  .heart{
+    position:fixed;z-index:30;pointer-events:none;
+    color:#ff2d55;line-height:1;opacity:0;
+    text-shadow:0 0 12px rgba(255,45,85,.9),0 0 28px rgba(255,45,85,.5);
+    animation:heartFloat .5s cubic-bezier(.2,.7,.3,1) forwards;
+    will-change:transform,opacity;
+  }
+  @keyframes heartFloat{
+    0%  {opacity:0;transform:translate(-50%,-50%) translate(0,0) scale(.35)}
+    22% {opacity:1;transform:translate(-50%,-50%) translate(calc(var(--dx) * .45),calc(var(--dy) * .45)) scale(1.1)}
+    100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(.8)}
+  }
+
+  .heart.fly{animation:heartFly 1.1s cubic-bezier(.15,.7,.3,1) forwards}
+  @keyframes heartFly{
+    0%  {opacity:0;transform:translate(-50%,-50%) translate(0,0) scale(.3)}
+    15% {opacity:1}
+    100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(1.05)}
+  }
+
+  /* ================= LOVE ================= */
+  .love-word{
+    position:fixed;z-index:29;pointer-events:none;
+    transform:translate(-50%,-50%);
+    display:flex;gap:clamp(2px,1vw,10px);
+    font-weight:800;font-size:clamp(36px,12vw,68px);
+    letter-spacing:.05em;color:#ff2d55;
+    text-shadow:0 0 18px rgba(255,45,85,.95),
+                0 0 46px rgba(255,45,85,.6),
+                0 0 90px rgba(255,45,85,.32);
+    transition:opacity .35s;
+  }
+  .love-word.out{opacity:0}
+  .love-word span{display:inline-block;animation:letterIn .55s cubic-bezier(.2,.9,.3,1) both}
+  .love-word span:nth-child(1){animation-delay:0s}
+  .love-word span:nth-child(2){animation-delay:.07s}
+  .love-word span:nth-child(3){animation-delay:.14s}
+  .love-word span:nth-child(4){animation-delay:.21s}
+  @keyframes letterIn{
+    0%  {opacity:0;transform:translateY(-28px) scale(.3) rotate(-16deg)}
+    62% {opacity:1;transform:translateY(0) scale(1.22) rotate(5deg)}
+    100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+  }
+
+  /* ================= РЕЖИМ ПРИБЛИЖЕНИЯ ================= */
+  .final .kicker,
+  .final .sub,
+  .final .hint,
+  .final .signature,
+  .final #approach{opacity:0;pointer-events:none}
+  .final .star-wrap{transform:scale(1.5)}
+  .final h1{opacity:.6}
+</style>
+</head>
+<body>
+
+<div id="space">
+  <div class="nebula"></div>
+  <div class="starfield" id="stars"></div>
+</div>
+
+<div class="labels" id="labels"></div>
+
+<main class="center">
+  <div class="content">
+    <div class="kicker">моя самая яркая звезда</div>
+    <h1>Сабина</h1>
+    <p class="sub" id="sub">Где бы я ни был, мой взгляд всегда ищет тебя среди миллионов звёзд.</p>
+
+    <div class="star-wrap" id="star" role="button" tabindex="0" aria-label="Звезда Сабина">
+      <div class="halo"></div>
+      <div class="star"></div>
+    </div>
+
+    <button id="approach" class="glass" type="button">Приблизить мою звезду</button>
+    <div class="hint">Нажми на звезду ✦ (11 раз подряд)</div>
+    <div class="signature">ОДНА ЗВЕЗДА · ЦЕЛАЯ ВСЕЛЕННАЯ ЧУВСТВ</div>
+  </div>
+</main>
+
+<button id="back" class="back" type="button">← Вернуться в главное меню</button>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ================= ЗВЁЗДНОЕ ПОЛЕ ================= */
+  const field = document.getElementById('stars');
+  for (let i = 0; i < 190; i++) {
+    const d = document.createElement('i');
+    d.className = 'dot';
+    d.style.left = (Math.random() * 100).toFixed(2) + '%';
+    d.style.top  = (Math.random() * 100).toFixed(2) + '%';
+    d.style.opacity = (0.25 + Math.random() * 0.75).toFixed(2);
+    d.style.setProperty('--t', (1.2 + Math.random() * 3).toFixed(2) + 's');
+    field.appendChild(d);
+  }
+
+  /* ================= ФРАЗЫ ================= */
+  const phrases = [
+    "Я тебя люблю","I love you","Je t’aime","Te amo","Ich liebe dich","Ti amo","Eu te amo","愛してる","사랑해","Я кохаю тебе",
+    "أحبك","אני אוהב אותך","Σ’ αγαπώ","Ik hou van jou","Jag älskar dig","Jeg elsker deg","Jeg elsker dig","Rakastan sinua","Kocham cię","Miluji tě",
+    "Ľúbim ťa","Szeretlek","愛してるよ","我爱你","我愛你","Люблю тебя","Seni seviyorum","Səni sevirəm","Mən səni sevirəm","دوستت دارم",
+    "मैं तुमसे प्यार करता हूँ","আমি তোমাকে ভালোবাসি","நான் உன்னை காதலிக்கிறேன்","நான் உன்னை நேசிக்கிறேன்","ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ","నేను నిన్ను ప్రేమిస్తున్నాను","ನಾನು ನಿನ್ನನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ","હું તને પ્રેમ કરું છું","ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ","म तिमीलाई माया गर्छु",
+    "ฉันรักคุณ","ผมรักคุณ","Mahal kita","Iniibig kita","Aku cinta kamu","Saya cinta padamu","我愛妳","Tôi yêu bạn","Em yêu anh","Anh yêu em",
+    "ผมรักคุณมาก","Ngiyakuthanda","Ek is lief vir jou","Ndinokuda","Nakupenda","Ndagukunda","Mo nifẹ rẹ","A hụrụ m gị n’anya","Mi amas vin","Volim te",
+    "Volim te","Ljubim te","Te iubesc","Kocham cię bardzo","Miluji tě moc","Я тебя обожаю","Я люблю тебя","Мен сені сүйемін","Мен сени сүйөм","Мен сени жакшы көрөм",
+    "Ես քեզ սիրում եմ","მე შენ მიყვარხარ","მიყვარხარ","Aš tave myliu","Es tevi mīlu","Ma armastan sind","T’estimo","Et deixo estimar","Ik hâld fan dy","Tá grá agam duit",
+    "Tha gaol agam ort","Rwy’n dy garu di","Me az kar","Aloha wau iā ʻoe","Ou te alofa ia te oe","Te quiero","Te adoro","Ti voglio bene","Saranghae","愛してる、サビナ",
+    "Ты — моя вселенная","You are my universe","Tu es mon univers","Eres mi universo","Du bist mein Universum","Sei il mio universo","Você é meu universo","Ты моя звезда","My one and only","Forever yours"
+  ];
+
+  /* ================= КОЛЬЦА НАДПИСЕЙ ================= */
+  const RING_COUNT = 4;
+  const RING_RATIO = [0.30, 0.355, 0.41, 0.465];
+  const RING_SPEED = [0.00017, -0.00014, 0.00012, -0.000095];
+  const ELLIPSE    = 0.62;
+
+  const labelsBox = document.getElementById('labels');
+  const buckets = Array.from({ length: RING_COUNT }, () => []);
+  phrases.forEach((txt, i) => buckets[i % RING_COUNT].push(txt));
+
+  const nodes = [];
+  buckets.forEach((list, r) => {
+    list.forEach((txt, i) => {
+      const el = document.createElement('span');
+      el.className = 'love';
+      el.textContent = txt;
+      el.style.opacity = (0.40 + Math.random() * 0.5).toFixed(2);
+      labelsBox.appendChild(el);
+      nodes.push({
+        el,
+        ring: r,
+        angle: (i / list.length) * Math.PI * 2 + r * 0.37,
+        speed: RING_SPEED[r]
+      });
+    });
+  });
+
+  /* ================= АНИМАЦИЯ КОЛЕЦ ================= */
+  const starWrap = document.getElementById('star');
+  let lastFrame = 0;
+
+  function tick(now) {
+    requestAnimationFrame(tick);
+    if (now - lastFrame < 33) return;   // ~30 fps, для плавного вращения хватает
+    lastFrame = now;
+
+    const rect = starWrap.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const base  = Math.min(window.innerWidth, window.innerHeight);
+    const maxR  = base / 2 - 64;        // чтобы слова не уезжали за край
+
+    const rx = RING_RATIO.map(k => Math.min(base * k, maxR));
+    const ry = rx.map(v => v * ELLIPSE);
+
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      const a = n.angle + now * n.speed;
+      const x = Math.round(cx + Math.cos(a) * rx[n.ring]);
+      const y = Math.round(cy + Math.sin(a) * ry[n.ring]);
+      n.el.style.transform =
+        'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
+    }
+  }
+  requestAnimationFrame(tick);
+
+  /* ================= СЕРДЕЧКИ ================= */
+  function starCenter() {
+    const r = starWrap.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+
+  function spawnHearts(x, y, count, scale) {
+    scale = scale || 1;
+    for (let i = 0; i < count; i++) {
+      const h = document.createElement('span');
+      h.className = 'heart';
+      h.textContent = '♥';
+
+      const ang  = -Math.PI / 2 + (Math.random() - 0.5) * 1.9;
+      const dist = 34 + Math.random() * 46;
+
+      h.style.left = x + 'px';
+      h.style.top  = y + 'px';
+      h.style.fontSize = ((16 + Math.random() * 10) * scale).toFixed(0) + 'px';
+      h.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+      h.style.setProperty('--dy', (Math.sin(ang) * dist).toFixed(1) + 'px');
+
+      document.body.appendChild(h);
+      h.addEventListener('animationend', () => h.remove());
+      setTimeout(() => h.remove(), 900);
+    }
+  }
+
+  function loveBurst(x, y) {
+    for (let i = 0; i < 20; i++) {
+      const h = document.createElement('span');
+      h.className = 'heart fly';
+      h.textContent = '♥';
+
+      const ang  = (Math.PI * 2 * i) / 20 + Math.random() * 0.25;
+      const dist = 90 + Math.random() * 110;
+
+      h.style.left = x + 'px';
+      h.style.top  = y + 'px';
+      h.style.fontSize = (14 + Math.random() * 14).toFixed(0) + 'px';
+      h.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(1) + 'px');
+      h.style.setProperty('--dy', (Math.sin(ang) * dist).toFixed(1) + 'px');
+      h.style.animationDelay = (i * 18) + 'ms';
+
+      document.body.appendChild(h);
+      h.addEventListener('animationend', () => h.remove());
+      setTimeout(() => h.remove(), 2500);
+    }
+
+    const w = document.createElement('div');
+    w.className = 'love-word';
+    w.style.left = x + 'px';
+    w.style.top  = y + 'px';
+    w.innerHTML = '<span>L</span><span>O</span><span>V</span><span>E</span>';
+    document.body.appendChild(w);
+
+    setTimeout(() => w.classList.add('out'), 1150);
+    setTimeout(() => w.remove(), 1650);
+  }
+
+  /* ================= СЧЁТЧИК ТАПОВ ================= */
+  const COMBO_TARGET = 11;
+  let combo = 0;
+  let comboTimer = null;
+
+  function onStarTap(e) {
+    const c = starCenter();
+    const x = (e && e.clientX) ? e.clientX : c.x;
+    const y = (e && e.clientY) ? e.clientY : c.y;
+
+    combo++;
+    clearTimeout(comboTimer);
+    comboTimer = setTimeout(() => { combo = 0; }, 1500);
+
+    spawnHearts(x, y, 3, 1 + Math.min(combo, 10) * 0.045);
+
+    if (combo >= COMBO_TARGET) {
+      combo = 0;
+      clearTimeout(comboTimer);
+      loveBurst(x, y);
+    }
+  }
+
+  starWrap.addEventListener('pointerdown', onStarTap);
+  starWrap.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onStarTap(null);
+    }
+  });
+
+  /* ================= РЕЖИМЫ ================= */
+  const subEl = document.getElementById('sub');
+  const SUB_MAIN = 'Где бы я ни был, мой взгляд всегда ищет тебя среди миллионов звёзд.';
+  const SUB_ZOOM = 'Ты — моя любимая вселенная. И я выбираю тебя снова и снова.';
+
+  document.getElementById('approach').addEventListener('click', () => {
+    document.body.classList.add('final');
+    subEl.textContent = SUB_ZOOM;
+  });
+
+  document.getElementById('back').addEventListener('click', () => {
+    document.body.classList.remove('final');
+    subEl.textContent = SUB_MAIN;
+    combo = 0;
+    clearTimeout(comboTimer);
+  });
+
+  /* ================= СБРОС ПРИ СКРЫТИИ ================= */
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      combo = 0;
+      clearTimeout(comboTimer);
+    }
+  });
+})();
+</script>
+</body>
+</html>
